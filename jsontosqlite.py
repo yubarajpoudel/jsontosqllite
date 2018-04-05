@@ -11,21 +11,26 @@ import sqlite3
 
 def __convert(*args):
 	try:
-		__showOptions()
-		choice = int(input("Enter your choice\t"))
-		if choice == 1:
-			__createTable(args[2])
-			pass
-		elif choice == 2:
-			pass
-		elif choice == 3:
-			pass
-		elif choice == 4:
-			pass
-		elif choice == 5:
-			pass
-		elif choice == 9:
-			exit()
+		option = 'M'
+		while option.lower() == 'm':
+			__showOptions()
+			choice = int(input("Enter your choice "))
+			if choice == 1:
+				__createTable(args[2])
+				pass
+			elif choice == 2:
+				pass
+			elif choice == 3:
+				pass
+			elif choice == 4:
+				pass
+			elif choice == 5:
+				pass
+			elif choice == 9:
+				sys.exit(0)
+				pass
+
+			option = input("Enter m to continue: ")
 	except:
 	 	print("File exception")
 
@@ -46,7 +51,7 @@ def __createTable(dbPath):
 
 	nextTable = 'y'
 	while nextTable.lower() == 'y':
-		tableName = input("Enter the table name :\t")
+		tableName = input("Enter the table name : ")
 		schemas= input("Enter the schema separated by space (for eg name,phone):")
 		print("tableName = {}, schemas = {}".format(tableName, schemas))
 		# Create table
@@ -62,11 +67,11 @@ def __createTable(dbPath):
 		print(sql)
 		c.execute(sql)
 		print("{} created successfully \n".format(tableName))
-		nextTable = input("Do you want to add more tables ? (Y | N):\t")
+		nextTable = input("Do you want to add more tables ? (Y | N): ")
 
 	conn.commit()
 	conn.close()
-	
+
 def main():
 	print("arguments lenght = %s"%(str(len(sys.argv))))
 	try:
@@ -77,7 +82,7 @@ def main():
 				with open(sys.argv[1], "r") as inputJSON:
 					data = inputJSON.read()
 					
-				dbName = input("Enter Preferred DatabaseName \n")
+				dbName = input("Enter Preferred DatabaseName ")
 				print("Database Name = {}".format(dbName))
 				destination = sys.argv[2]
 				# with open(destination, "w") as outputFile:
