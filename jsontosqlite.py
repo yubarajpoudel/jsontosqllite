@@ -22,6 +22,7 @@ def __convert(*args):
 				__createTable(args[2])
 				pass
 			elif choice == 2:
+				__insertDataInTable(args[0], args[2])
 				pass
 			elif choice == 3:
 				pass
@@ -43,6 +44,60 @@ def __convert(*args):
 			option = input("Enter m to continue: ")
 
 	except Exception as e: print(e)
+
+def __insertDataInTable(data, dbPath):
+	con = sqlite3.connect(dbPath)
+	cursor = con.cursor()
+	# parse the json and add the value in table
+	dataJSON = json.loads(data)
+	# print(dataJSON)
+	# for tableKey in dataJSON :
+	mSql = "SELECT name FROM sqlite_master WHERE type='table'"
+	cursor.execute(mSql)
+	for tableName in cursor.fetchall():
+
+		print(tableName[0])
+		tableDatas = dataJSON[tableName[0]]
+		cursor.execute("PRAGMA table_info({})".format(tableName[0]))
+		schemaList = cursor.fetchall()
+		# tableKeyvalue = "["
+		tableKeyvalue = []
+		for tableData in tableDatas:
+			# print(tableData)
+			# data = "("
+			data=[]
+			# first = True
+			for schema in schemaList:
+				# if not first:
+				# 	data = data + ","
+				# data = data + "\'"+ tableData[schema[1]]+"\""
+				# first = False
+				data.append(tableData[schema[1]])
+			# data = data + ")"
+			# print(data)
+
+			# tableKeyvalue = tableKeyvalue + data+","	
+			tableKeyvalue.append(data)
+			# print(json.dumps(tableKeyvalue))
+		# tableKeyvalue = tableKeyvalue[:-1] + "]"
+		# print(tableKeyvalue)
+		
+		optinalParam = "("
+		for i in range(0, len(schemaList)):
+			optinalParam = optinalParam+"?,"
+		optinalParam = optinalParam[:-1]+")"
+
+		print(optinalParam)
+		print('insert into {} values {}'.format(tableName[0], optinalParam))
+		# daata = [("1","test title 1","test Description 1"),("2","test title 2","test Description 2"),("3","test title 3","test Description 3"),("4","test title 4","test Description 4"),("5","test title 5","test Description 5")]
+		list_for_slicing = [["fluorine", "F", "dd"], ["chlorine", "Cl", "dd"], ["bromine", "Br", "dd"], ["iodine", "I", "dd"], ["astatine", "At", "dd"]]
+		cursor.executemany('insert into {} values {}'.format(tableName[0], optinalParam), tableKeyvalue)
+		con.commit()
+		# print(data)
+		# print(dataJSON[tableName[0]])
+
+	con.close()
+	# print(data)
 
 def __showOptions():
 	os.system("clear")
