@@ -56,7 +56,7 @@ def __insertDataInTable(data, dbPath):
 	cursor.execute(mSql)
 	for tableName in cursor.fetchall():
 
-		print(tableName[0])
+		# print(tableName[0])
 		tableDatas = dataJSON[tableName[0]]
 		cursor.execute("PRAGMA table_info({})".format(tableName[0]))
 		schemaList = cursor.fetchall()
@@ -87,12 +87,11 @@ def __insertDataInTable(data, dbPath):
 			optinalParam = optinalParam+"?,"
 		optinalParam = optinalParam[:-1]+")"
 
-		print(optinalParam)
-		print('insert into {} values {}'.format(tableName[0], optinalParam))
-		# daata = [("1","test title 1","test Description 1"),("2","test title 2","test Description 2"),("3","test title 3","test Description 3"),("4","test title 4","test Description 4"),("5","test title 5","test Description 5")]
-		list_for_slicing = [["fluorine", "F", "dd"], ["chlorine", "Cl", "dd"], ["bromine", "Br", "dd"], ["iodine", "I", "dd"], ["astatine", "At", "dd"]]
+		# print(optinalParam)
+		print('Query = insert into {} values {}'.format(tableName[0], optinalParam))
 		cursor.executemany('insert into {} values {}'.format(tableName[0], optinalParam), tableKeyvalue)
 		con.commit()
+		print("Data inserted at {} successfully".format(tableName[0]))
 		# print(data)
 		# print(dataJSON[tableName[0]])
 
